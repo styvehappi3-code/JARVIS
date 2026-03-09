@@ -5,21 +5,26 @@ from gemini_service import ask_gemini
 from conversation_engine import update_patient
 from redflag_engine import evaluate_redflags
 from protocol_engine import headache_protocol
-from ml_engine import predict, train_model
-from dataset_manager import add_case
+from ml_engine import predict
 from pdf_generator import generate_pdf
-from voice_service import speech_to_text
-import uuid, shutil, os
+import shutil, os
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 app = FastAPI()
+
+# CORS pour localhost et ton frontend Vercel
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://jarvis-eight-navy.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 sessions = {}
 
 class Message(BaseModel):
@@ -28,7 +33,6 @@ class Message(BaseModel):
 
 @app.post("/chat")
 def chat(data: Message):
-
     if data.session_id not in sessions:
         sessions[data.session_id] = {
             "history": [],
@@ -49,19 +53,16 @@ def chat(data: Message):
 
 @app.post("/voice")
 def voice_input(file: UploadFile = File(...)):
-
     file_location = f"temp_{file.filename}"
     with open(file_location, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
     text = speech_to_text(file_location)
     os.remove(file_location)
-
     return {"text": text}
 
 @app.post("/finalize/{session_id}")
 def finalize(session_id: str):
-
     session = sessions[session_id]
     patient = session["patient"]
 
@@ -75,11 +76,7 @@ def finalize(session_id: str):
     ]
 
     ml_result = predict(features)
-
-    if ml_result:
-        diagnosis = ml_result
-    else:
-        diagnosis = headache_protocol(patient)
+    diagnosis = ml_result if ml_result else headache_protocol(patient)
 
     result = {
         "triage": patient.triage_level,
@@ -87,16 +84,13 @@ def finalize(session_id: str):
     }
 
     generate_pdf(result, f"rapport_{session_id}.pdf")
-
     del sessions[session_id]
 
     return result
-    import os
-import uvicorn
 
+# -----------------------------
+# Pour lancer le serveur avec Render
+# -----------------------------
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 8000))  # Render fournit le PORT
     uvicorn.run(app, host="0.0.0.0", port=port)
-
-
-
