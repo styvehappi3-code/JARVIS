@@ -89,6 +89,12 @@ def finalize(session_id: str):
     generate_pdf(result, f"rapport_{session_id}.pdf")
 
     del sessions[session_id]
+    import os
+import uvicorn
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))  # Render fournit le PORT
+    uvicorn.run(app, host="0.0.0.0", port=port)
 
     return result
 
