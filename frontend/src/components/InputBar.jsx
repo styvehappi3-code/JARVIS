@@ -36,7 +36,7 @@ function InputBar({ input, setInput, onSend }) {
       
       <input
         type="text"
-        placeholder="Describe your symptoms..."
+        placeholder="Demander à JARVIS..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
