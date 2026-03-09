@@ -3,7 +3,7 @@ import google.generativeai as genai
 import os
 
 # Récupère la clé API depuis les variables d'environnement
-genai.configure(api_key=os.getenv("AIzaSyC_Wd8mlbog0D_FzofiJNsaH-mqMxsLvHE"))
+genai.configure(api_key=os.getenv("AIzaSyAZQtN1Pp0RhfwzeEkQ4oe3Ek2Rf7RCGx0"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # Initialise le modèle
