@@ -19,10 +19,13 @@ def ask_gemini(message, history):
 
     conversation += f"Patient: {message}\nAssistant:"
 
-    try:
-        response = model.generate_content(conversation)
-        return response.text.strip()
-    except Exception as e:
-        print("ERREUR GEMINI:", e)
-        return "Reformule la question medical"
-
+    
+  
+try:
+    response = model.generate_content(conversation)
+    return response.text.strip()
+except Exception as e:
+    # Affiche l'erreur complète dans la console
+    print("ERREUR GEMINI:", e)
+    # Renvoie l'erreur exacte dans la réponse pour le test
+    return f"ERREUR GEMINI: {e}"
