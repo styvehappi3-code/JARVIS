@@ -12,12 +12,12 @@ function ChatBox({ messages, loading }) {
         <div className="chat-box">
       {messages.length === 1 && (
         <div className="welcome-center">
-          <h2>How can I help you today?</h2>
+          <h2>Que puis-je faire pour vous aujourd'hui?</h2>
           <div className="suggestions">
-            <button>Headaches and fever</button>
-            <button>Chest pain</button>
-            <button>Abdominal pain</button>
-            <button>Skin rash</button>
+            <button>Donne du peps à ma journée</button>
+            <button>Coder & Pirater</button>
+            <button>Rechercher</button>
+            <button>Apprendre</button>
             </div>
             </div>
       )}
