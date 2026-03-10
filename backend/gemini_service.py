@@ -2,7 +2,7 @@ import google.generativeai as genai
 import os
 
 # 1. Récupération de la clé
-api_key = os.getenv("API_KEY")
+api_key = os.getenv("AIzaSyAZQtN1Pp0RhfwzeEkQ4oe3Ek2Rf7RCGx0")
 genai.configure(api_key=api_key)
 
 def ask_gemini(message, history):
