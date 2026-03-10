@@ -1,33 +1,42 @@
-
 import google.generativeai as genai
 import os
 
-# Récupère la clé API depuis les variables d'environnement
-genai.configure(api_key=os.getenv("AIzaSyAZQtN1Pp0RhfwzeEkQ4oe3Ek2Rf7RCGx0"))
-model = genai.GenerativeModel("gemini-2.5-flash")
+# 1. Récupération PROPRE de la clé
+# Sur Render, tu dois créer une variable nommée "API_KEY" dans l'onglet Environment
+api_key = os.getenv("API_KEY") 
 
-# Initialise le modèle
-model = genai.GenerativeModel("gemini-1.5-flash")
+if not api_key:
+    print("ERREUR : La variable d'environnement API_KEY est vide !")
+else:
+    genai.configure(api_key=api_key)
 
+# 2. Configuration du modèle (Une seule fois)
+# On utilise le paramètre 'system_instruction' pour que JARVIS garde sa personnalité
 SYSTEM_PROMPT = """
 Tu es JARVIS, un assistant intelligent et polyvalent.
 Réponds de manière claire, concise et naturelle.
 Aide l’utilisateur pour toutes sortes de questions, de façon amicale et compréhensible.
-Évite les réponses trop longues, sois pratique et direct.
 """
 
+model = genai.GenerativeModel(
+    model_name="gemini-1.5-flash",
+    system_instruction=SYSTEM_PROMPT
+)
+
 def ask_gemini(message, history):
-    """Envoie le message au modèle Gemini et retourne la réponse."""
-    conversation = SYSTEM_PROMPT + "\n"
-
+    """Envoie le message au modèle et gère l'historique."""
+    
+    # On utilise le système de chat natif de Gemini, c'est plus robuste
+    chat_history = []
     for h in history:
-        conversation += f"Patient: {h['user']}\nAssistant: {h['bot']}\n"
-
-    conversation += f"Patient: {message}\nAssistant:"
+        chat_history.append({"role": "user", "parts": [h['user']]})
+        chat_history.append({"role": "model", "parts": [h['bot']]})
 
     try:
-        response = model.generate_content(conversation)
-        return response.text.strip()  # <- ici le return est à l'intérieur de la fonction
+        chat = model.start_chat(history=chat_history)
+        response = chat.send_message(message)
+        return response.text.strip()
     except Exception as e:
-        print("ERREUR GEMINI:", e)
-        return "Reformule la question."
+        # On affiche l'erreur dans les logs Render pour savoir POURQUOI ça rate
+        print(f"ERREUR GEMINI DÉTAILLÉE : {e}")
+        return "Monsieur, un problème technique empêche ma réponse. Vérifiez mes logs."
