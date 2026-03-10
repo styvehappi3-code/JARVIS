@@ -1,7 +1,7 @@
 from groq import Groq
 import os
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(api_key=os.getenv("Gsk_MVDMnfJZpoagJYsT6TDDWGdyb3FY8p7Kz4n1ciDKbYVv98e4wwoS"))
 
 def ask_ai(message, history):
 
