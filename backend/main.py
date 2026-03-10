@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from groq import Groq
 
 # --- CLÉ DIRECTEMENT DANS LE CODE POUR TEST ---
-YOUR_API_KEY = "Gsk_MVDMnfJZpoagJYsT6TDDWGdyb3FY8p7Kz4n1ciDKbYVv98e4wwoS"  # remplace par ta vraie clé
+YOUR_API_KEY = "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"  # remplace par ta vraie clé
 
 client = Groq(api_key=YOUR_API_KEY)
 
