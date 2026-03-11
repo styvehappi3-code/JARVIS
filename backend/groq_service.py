@@ -8,7 +8,7 @@ def ask_groq(message, history):
     messages = [
         {
             "role": "system",
-            "content": "Tu es JARVIS, une intelligence artificielle technique qui aide l'utilisateur à résoudre des problèmes, programmer, apprendre et gérer ses projets."
+            "content": "Tu es JARVIS, une IA technique. Réponds de manière courte et directe"
         }
     ]
 
