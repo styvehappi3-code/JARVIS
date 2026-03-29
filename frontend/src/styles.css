@@ -446,44 +446,11 @@ body {
   
 }
 
-.mic-btn {
- position:absolute;
- right: 20px;
- top: 30%;
- display: flex;
- align-items: center;
- justify-content: center;
- transform: translateY(-50);
- background: transparent;
- border: none;
- cursor: pointer;
-}
-
-.mic-btn:hover {
-  background: #e6e9f2;
-}
-
 
 
 /* SEND BUTTON */
 
-.send-btn {
-  marginLeft: "6px",
-            backgroundColor: "#4f46e5",
-            borderRadius: "50%",
-            padding: "8px",
-            border: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            color: "white",
-  transition: 0.2s;
-}
 
-.send-btn:hover {
-  transform: scale(1.05);
-}
 
 /* LOADER */
 
