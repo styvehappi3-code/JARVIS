@@ -64,7 +64,7 @@ return (
 
 <input  
     type="text"  
-    placeholder="Demander à JARVIS..."  
+    placeholder="Demander à JARVueueueuIS..."  
     value={input}  
     onChange={(e) => setInput(e.target.value)}  
   />  
