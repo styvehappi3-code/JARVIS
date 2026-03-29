@@ -5,6 +5,7 @@ function InputBar({ onSend }) {
   const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
   const [file, setFile] = useState(null);
+  const [focused, setFocused] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -48,8 +49,26 @@ function InputBar({ onSend }) {
   };
 
   return (
-    <div className="input-bar" style={{ display: "flex", flexDirection: "column" }}>
-      <div className="input-wrapper" style={{ display: "flex", alignItems: "center" }}>
+    <div
+      className="input-bar"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: focused ? "#e0e7ff" : "#f3f4f6", // couleur change au focus
+        borderRadius: "16px", // barre arrondie
+        padding: "6px",
+        transition: "background-color 0.2s",
+      }}
+    >
+      <div
+        className="input-wrapper"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "16px",
+          overflow: "hidden",
+        }}
+      >
         {/* + Bouton fichiers */}
         <button
           type="button"
@@ -79,7 +98,15 @@ function InputBar({ onSend }) {
           placeholder="Demander à JARVIS..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          style={{ flex: 1, padding: "6px 8px", borderRadius: "6px", border: "1px solid #ccc" }}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          style={{
+            flex: 1,
+            padding: "6px 8px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            outline: "none",
+          }}
         />
 
         {/* 🎤 Micro */}
