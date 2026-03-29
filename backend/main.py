@@ -8,6 +8,11 @@ from protocol_engine import headache_protocol
 from ml_engine import predict
 from pdf_generator import generate_pdf
 from voice_service import speech_to_text  # <-- service micro
+from fastapi import UploadFile, File, Form
+import io
+import pdfplumber
+from PIL import Image
+import pytesseract
 from fastapi.middleware.cors import CORSMiddleware
 import shutil, os
 import uvicorn
