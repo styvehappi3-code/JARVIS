@@ -46,6 +46,24 @@ return (
   </button>  
   </div>  
 
+<button
+          type="button"
+          onClick={handleVoice}
+          style={{
+            marginLeft: "6px",
+            backgroundColor: "#f3f4f6",
+            borderRadius: "50%",
+            padding: "6px",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Mic size={18} color={listening ? "red" : "black"} />
+        </button>
+ 
   <button className="send-btn" onClick={onSend}>  
     <Send size={18} />  
   </button>  
