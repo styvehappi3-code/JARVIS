@@ -40,27 +40,54 @@ def health():
 
 # --- Chat endpoint ---
 @app.post("/chat")
-def chat(data: Message):
-    if data.session_id not in sessions:
-        sessions[data.session_id] = {"history": [], "patient": Patient()}
+async def chat(
+    message: str = Form(...),
+    session_id: str = Form(...),
+    file: UploadFile = File(None)
+):
+    if session_id not in sessions:
+        sessions[session_id] = {"history": [], "patient": Patient()}
 
-    session = sessions[data.session_id]
+    session = sessions[session_id]
 
     try:
+        extracted_text = ""
+
+        # 📎 Si fichier envoyé
+        if file:
+            content = await file.read()
+
+            # 📄 PDF
+            if file.content_type == "application/pdf":
+                with pdfplumber.open(io.BytesIO(content)) as pdf:
+                    for page in pdf.pages:
+                        extracted_text += page.extract_text() or ""
+
+            # 🖼️ IMAGE
+            elif "image" in file.content_type:
+                image = Image.open(io.BytesIO(content))
+                extracted_text = pytesseract.image_to_string(image)
+
+            # 📄 TXT
+            elif "text" in file.content_type:
+                extracted_text = content.decode("utf-8")
+
+        # 🔥 On combine message + fichier
+        full_message = message + "\n" + extracted_text[:1000]
+
         # Mise à jour patient
-        session["patient"] = update_patient(session["patient"], data.message)
+        session["patient"] = update_patient(session["patient"], full_message)
 
-        # Appel à Groq
-        response = ask_groq(data.message, session["history"])
+        # Appel Groq
+        response = ask_groq(full_message, session["history"])
 
-        # Sauvegarde dans l'historique
-        session["history"].append({"user": data.message, "bot": response})
+        # Historique
+        session["history"].append({"user": message, "bot": response})
 
         return {"response": response}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 # --- Voice endpoint ---
 @app.post("/voice")
 def voice_input(file: UploadFile = File(...)):
