@@ -1,13 +1,14 @@
-import { Send, Mic } from "lucide-react";
+import { Send, Mic, Plus } from "lucide-react";
 import { useState, useRef } from "react";
 
-function InputBar({ input, setInput, onSend }) {
+function InputBar({ onSend }) {
+  const [input, setInput] = useState("");
   const [listening, setListening] = useState(false);
-
-  // 🆕 fichier
   const [file, setFile] = useState(null);
+
   const fileInputRef = useRef(null);
 
+  // 🎤 Voice recognition
   const handleVoice = () => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -29,29 +30,36 @@ function InputBar({ input, setInput, onSend }) {
       setListening(false);
     };
 
-    recognition.onerror = () => {
-      setListening(false);
-    };
+    recognition.onerror = () => setListening(false);
   };
 
-  // 🆕 ouvrir sélection fichier
+  // ➕ Ouvrir sélecteur fichiers
   const handleAttachClick = () => {
     fileInputRef.current.click();
   };
 
+  // 📨 Envoyer
+  const handleSend = () => {
+    if (!input.trim() && !file) return;
+
+    onSend({ text: input, file });
+    setInput("");
+    setFile(null);
+  };
+
   return (
-    <div className="input-bar">
-      <div className="input-wrapper">
-
-        {/* 📎 Trombone */}
-        <span
+    <div className="input-bar" style={{ display: "flex", flexDirection: "column" }}>
+      <div className="input-wrapper" style={{ display: "flex", alignItems: "center" }}>
+        {/* + Bouton fichiers */}
+        <button
+          type="button"
           onClick={handleAttachClick}
-          style={{ cursor: "pointer", marginRight: "6px" }}
+          style={{ marginRight: "6px", background: "transparent", border: "none", cursor: "pointer" }}
         >
-          📎
-        </span>
+          <Plus size={20} />
+        </button>
 
-        {/* Input caché */}
+        {/* Input caché fichiers */}
         <input
           type="file"
           ref={fileInputRef}
@@ -66,31 +74,26 @@ function InputBar({ input, setInput, onSend }) {
           placeholder="Demander à JARVIS..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          style={{ flex: 1, padding: "6px 8px" }}
         />
 
         {/* 🎤 Micro */}
-        <button type="button" className="mic-btn" onClick={handleVoice}>
+        <button type="button" onClick={handleVoice} style={{ marginLeft: "6px" }}>
           <Mic size={18} color={listening ? "red" : "black"} />
+        </button>
+
+        {/* 📨 Send */}
+        <button onClick={handleSend} style={{ marginLeft: "6px" }}>
+          <Send size={18} />
         </button>
       </div>
 
-      {/* 📎 Preview fichier (optionnel mais utile) */}
+      {/* Preview fichier */}
       {file && (
         <div style={{ fontSize: "12px", marginTop: "4px" }}>
           📎 {file.name}
         </div>
       )}
-
-      {/* 📨 Send */}
-      <button
-        className="send-btn"
-        onClick={() => {
-          onSend(file); // 🆕 on envoie fichier aussi
-          setFile(null); // reset après envoi
-        }}
-      >
-        <Send size={18} />
-      </button>
     </div>
   );
 }
