@@ -30,19 +30,7 @@ recognition.onerror = () => {
 };
 
 };
- // ➕ Ouvrir sélecteur fichiers
-  const handleAttachClick = () => {
-    fileInputRef.current.click();
-  };
-
-  // 📨 Envoyer
-  const handleSend = () => {
-    if (!input.trim() && !file) return;
-
-    onSend({ text: input, file });
-    setInput("");
-    setFile(null);
-  };
+ 
 
   return (
     <div className="input-bar" style={{ display: "flex", flexDirection: "column" }}>
