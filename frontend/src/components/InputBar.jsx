@@ -78,12 +78,33 @@ style={{ marginRight: "6px", background: "transparent", border: "none", cursor: 
     />  
 
     {/* 🎤 Micro */}  
-    <button type="button" onClick={handleVoice} style={{ marginLeft: "6px" }}>  
+    <button type="button" onClick={handleVoice} style={{
+            marginLeft: "6px",
+            backgroundColor: "#f3f4f6",
+            borderRadius: "50%",
+            padding: "6px",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>  
       <Mic size={18} color={listening ? "red" : "black"} />  
     </button>  
 
     {/* 📨 Send */}  
-    <button onClick={handleSend} style={{ marginLeft: "6px" }}>  
+    <button onClick={handleSend} style={{
+            marginLeft: "6px",
+            backgroundColor: "#4f46e5",
+            borderRadius: "50%",
+            padding: "8px",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            color: "white",
+          }}>  
       <Send size={18} />  
     </button>  
   </div>  
