@@ -54,7 +54,12 @@ function InputBar({ onSend }) {
         <button
           type="button"
           onClick={handleAttachClick}
-          style={{ marginRight: "6px", background: "transparent", border: "none", cursor: "pointer" }}
+          style={{
+            marginRight: "6px",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+          }}
         >
           <Plus size={20} />
         </button>
@@ -74,16 +79,44 @@ function InputBar({ onSend }) {
           placeholder="Demander à JARVIS..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          style={{ flex: 1, padding: "6px 8px" }}
+          style={{ flex: 1, padding: "6px 8px", borderRadius: "6px", border: "1px solid #ccc" }}
         />
 
         {/* 🎤 Micro */}
-        <button type="button" onClick={handleVoice} style={{ marginLeft: "6px" }}>
+        <button
+          type="button"
+          onClick={handleVoice}
+          style={{
+            marginLeft: "6px",
+            backgroundColor: "#f3f4f6",
+            borderRadius: "50%",
+            padding: "6px",
+            border: "none",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Mic size={18} color={listening ? "red" : "black"} />
         </button>
 
-        {/* 📨 Send */}
-        <button onClick={handleSend} style={{ marginLeft: "6px" }}>
+        {/* 📨 Send en bulle */}
+        <button
+          onClick={handleSend}
+          style={{
+            marginLeft: "6px",
+            backgroundColor: "#4f46e5",
+            borderRadius: "50%",
+            padding: "8px",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            color: "white",
+          }}
+        >
           <Send size={18} />
         </button>
       </div>
