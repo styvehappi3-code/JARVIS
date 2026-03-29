@@ -21,7 +21,6 @@ function InputBar({ onSend }) {
     const recognition = new SpeechRecognition();
     recognition.lang = "en-US";
     recognition.start();
-
     setListening(true);
 
     recognition.onresult = (event) => {
@@ -38,24 +37,23 @@ function InputBar({ onSend }) {
     fileInputRef.current.click();
   };
 
-  // 📨 Envoyer
+  // 📨 Envoyer texte + fichier
   const handleSend = () => {
     if (!input.trim() && !file) return;
 
+    // On envoie un objet complet au parent
     onSend({ text: input, file });
+
+    // Reset après envoi
     setInput("");
     setFile(null);
   };
 
   return (
-    <div className="input-bar" style={{ display: "flex", flexDirection: "column" }}>
-      <div className="input-wrapper" style={{ display: "flex", alignItems: "center" }}>
+    <div className="input-bar">
+      <div className="input-wrapper">
         {/* + Bouton fichiers */}
-        <button
-          type="button"
-          onClick={handleAttachClick}
-          style={{ marginRight: "6px", background: "transparent", border: "none", cursor: "pointer" }}
-        >
+        <button type="button" onClick={handleAttachClick} className="attach-btn">
           <Plus size={20} />
         </button>
 
@@ -74,44 +72,22 @@ function InputBar({ onSend }) {
           placeholder="Demander à JARVIS..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          style={{ flex: 1, padding: "6px 8px" }}
         />
 
         {/* 🎤 Micro */}
-        <button type="button" onClick={handleVoice} style={{
-            marginLeft: "6px",
-            backgroundColor: "#f3f4f6",
-            borderRadius: "50%",
-            padding: "6px",
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
+        <button type="button" onClick={handleVoice} className="mic-btn">
           <Mic size={18} color={listening ? "red" : "black"} />
         </button>
 
         {/* 📨 Send */}
-        <button type="button" onClick={handleSend} style={{
-            marginLeft: "6px",
-            backgroundColor: "#4f46e5",
-            borderRadius: "50%",
-            padding: "8px",
-            border: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            color: "white",
-          }}>
+        <button type="button" onClick={handleSend} className="send-btn">
           <Send size={18} />
         </button>
       </div>
 
       {/* Preview fichier */}
       {file && (
-        <div style={{ fontSize: "12px", marginTop: "4px" }}>
+        <div className="file-preview">
           📎 {file.name}
         </div>
       )}
