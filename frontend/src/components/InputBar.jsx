@@ -69,13 +69,14 @@ style={{ marginRight: "6px", background: "transparent", border: "none", cursor: 
     />  
 
     {/* Input texte */}  
-/* Input texte */}
+
 <input
 type="text"
 placeholder="Demander à JARVIS..."
 value={input}
 onChange={(e) => setInput(e.target.value)}
-style={{ flex: 1, padding: "12px 14px", height: "50px", fontSize: "16px" }}
+style={{ flex: 1, padding: "6px 8px" }}
+
 
 
     {/* 🎤 Micro */}  
