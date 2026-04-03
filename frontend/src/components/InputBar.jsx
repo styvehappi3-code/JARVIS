@@ -75,7 +75,7 @@ type="text"
 placeholder="Demander à JARVIS..."
 value={input}
 onChange={(e) => setInput(e.target.value)}
-style={{ flex: 1, padding: "12px 16px", height: "30px", fontSize: "14px" }}
+style={{ flex: 1, padding: "12px 16px", height: "40px", fontSize: "16px" }}
 />
 
 
@@ -91,7 +91,7 @@ style={{ flex: 1, padding: "12px 16px", height: "30px", fontSize: "14px" }}
             alignItems: "center",
             justifyContent: "center",
           }}>  
-      <Mic size={18} color={listening ? "red" : "black"} />  
+      <Mic size={20} color={listening ? "red" : "black"} />  
     </button>  
 
     {/* 📨 Send */}  
@@ -107,7 +107,7 @@ style={{ flex: 1, padding: "12px 16px", height: "30px", fontSize: "14px" }}
             cursor: "pointer",
             color: "white",
           }}>  
-      <Send size={18} />  
+      <Send size={20} />  
     </button>  
   </div>  
 
