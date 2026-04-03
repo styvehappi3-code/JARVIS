@@ -1,12 +1,15 @@
-import { useState } from "react";
-import{v4 as uuidv4}from"uuid"
+import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { sendMessage } from "./api";
 import Header from "./components/Header";
 import ChatBox from "./components/ChatBox";
 import InputBar from "./components/InputBar";
 import Disclaimer from "./components/Disclaimer";
+import SplashScreen from "./SplashScreen";
 
 function App() {
+  const [loadingScreen, setLoadingScreen] = useState(true);
+
   const [messages, setMessages] = useState([
     {
       role: "ai",
@@ -17,8 +20,15 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [sessionId] = useState(uuidv4());
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoadingScreen(false);
+    }, 3000);
+  }, []);
+
+  if (loadingScreen) return <SplashScreen />;
+
   const handleSend = async () => {
-    console.log("CLICK OK");
     if (!input.trim()) return;
 
     const userMessage = { role: "user", text: input };
