@@ -14,6 +14,24 @@ import uvicorn
 
 app = FastAPI(title="JARVIS Medical API")
 
+@app.on_event("startup")
+async def warmup_groq():
+    """
+    Appelé UNE SEULE FOIS au démarrage du serveur.
+    Force la connexion vers Groq avant le premier utilisateur.
+    """
+    from groq_service import client
+
+    try:
+        client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": "ping"}],
+            max_tokens=1
+        )
+        print("✅ Groq connection warm and ready")
+    except Exception as e:
+        print("❌ Warmup failed:", e)
+
 # --- CORS pour React ---
 app.add_middleware(
     CORSMiddleware,
