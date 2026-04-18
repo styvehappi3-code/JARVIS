@@ -16,14 +16,17 @@ function App() {
       text: "Bonjour Styve! je suis JARVIS, ton assistant. Dis moi ce que tu veux faire aujourd'hui."
     }
   ]);
+
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sessionId] = useState(uuidv4());
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setLoadingScreen(false);
     }, 2500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   if (loadingScreen) return <SplashScreen />;
@@ -32,26 +35,45 @@ function App() {
     if (!input.trim()) return;
 
     const userMessage = { role: "user", text: input };
+
     setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+
+    // 👉 IMPORTANT : active typing AVANT requête
     setLoading(true);
 
     try {
       const data = await sendMessage(sessionId, input);
+
       const aiMessage = { role: "ai", text: data.response };
+
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
+      console.error(error);
       alert("Server error");
+    } finally {
+      // 👉 petit délai pour éviter disparition instantanée
+      setTimeout(() => {
+        setLoading(false);
+      }, 300);
     }
-
-    setLoading(false);
-    setInput("");
   };
 
   return (
     <div className="app">
       <Header />
-      <ChatBox messages={messages} loading={loading} />
-      <InputBar input={input} setInput={setInput} onSend={handleSend} />
+
+      <ChatBox
+        messages={messages}
+        loading={loading}
+      />
+
+      <InputBar
+        input={input}
+        setInput={setInput}
+        onSend={handleSend}
+      />
+
       <Disclaimer />
     </div>
   );
