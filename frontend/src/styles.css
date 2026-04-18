@@ -576,7 +576,7 @@ body {
   display: inline-flex;
   gap: 6px;
   padding: 10px 14px;
-  background: #e5e5ea;
+  background: transparent;
   border-radius: 20px;
   width: fit-content;
 }
