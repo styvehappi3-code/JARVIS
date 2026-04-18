@@ -1,17 +1,43 @@
-# groq_service.py
 from groq import Groq
 import httpx
 import os
 
-#  Client HTTP persistant (garde la connexion ouverte)
-http_client = httpx.Client(http2=True, timeout=30.0)
+# Pool HTTP optimisé (connexion persistante)
+http_client = httpx.Client(
+    http2=True,
+    timeout=30.0,
+    limits=httpx.Limits(
+        max_connections=20,
+        max_keepalive_connections=20,
+        keepalive_expiry=300,
+    )
+)
 
 client = Groq(
     api_key=os.getenv("GROQ_API_KEY"),
     http_client=http_client
 )
 
-SYSTEM_PROMPT = "Tu es JARVIS, une IA technique et tu es un professionnel dans le coding. Réponds de manière courte et directe"
+SYSTEM_PROMPT = (
+    "Tu es JARVIS, une IA technique et tu es un professionnel dans le coding. "
+    "Réponds de manière courte et directe"
+)
+
+def warmup():
+    """
+    Chauffe la connexion TLS + HTTP2 + pool AVANT le premier user.
+    S'exécute dans CHAQUE worker.
+    """
+    try:
+        client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": "ping"}],
+            max_tokens=1
+        )
+        print("✅ Groq warmed in this worker")
+    except Exception as e:
+        print("❌ Warmup error:", e)
+
 
 def ask_groq(message, history):
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
