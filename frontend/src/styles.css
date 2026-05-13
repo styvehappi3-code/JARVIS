@@ -6,7 +6,7 @@
   font-family: "Inter", sans-serif;
 }
 
-/* BACKGROUND WEBP ANIMÉ */
+/* BACKGROUND WEBP ANMÉ */
 body::before {
   content: "";
   position: fixed;
